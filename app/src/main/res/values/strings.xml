@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">HackActivity</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string name="title_upcoming">Upcoming</string>
+    <string name="title_live">Live</string>
+    <string name="join_event">Join event</string>
+
+</resources>
