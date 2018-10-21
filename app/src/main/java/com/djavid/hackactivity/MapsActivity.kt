@@ -149,13 +149,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         setEventJoined(joined)
     }
 
-    private fun setEventJoined(joined: Boolean) {
+    private fun setEventJoined(joined: Boolean, changeNum: Boolean = false) {
         joinBtn.text = if (joined) getString(R.string.joined) else getString(R.string.join_event)
         joinBtn.setTextColor(
             if (joined) ContextCompat.getColor(this, R.color.green)
             else ContextCompat.getColor(this, R.color.blue)
         )
-        joinBtn.isEnabled = !joined
+
+        try {
+            if (changeNum) {
+                val splitted = membersTitle.text.toString().split('/')
+                var count = splitted[0].trim().toInt()
+                if (joined) count++ else count--
+                membersTitle.text = "$count /${splitted[1]}"
+            }
+        } catch (e: Throwable) { }
     }
 
     private fun showJoinBtnProgress(show: Boolean) {
@@ -172,8 +180,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             .doOnSubscribe { showJoinBtnProgress(true) }
             .doOnEvent { _, _ -> showJoinBtnProgress(false) }
             .subscribe({
-                if (it == 1) {
-                    setEventJoined(true)
+                when (it) {
+                    2 -> setEventJoined(false, true)
+                    1 -> setEventJoined(true, true)
                 }
             }, {
                 it.printStackTrace()
