@@ -68,16 +68,22 @@
 
         </Toolbar>
 
-        <com.mindorks.placeholderview.PlaceHolderView
-                android:id="@+id/eventsRecycler"
+        <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:paddingTop="8dp"
-                android:clipToPadding="false"
-                tools:listitem="@layout/item_event"
                 app:layout_constraintTop_toBottomOf="@id/toolbar"
-                app:layout_constraintBottom_toBottomOf="parent"
-        />
+                app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.mindorks.placeholderview.PlaceHolderView
+                    android:id="@+id/eventsRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="8dp"
+                    android:clipToPadding="false"
+                    tools:listitem="@layout/item_event" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
     </android.support.constraint.ConstraintLayout>
 

@@ -3,6 +3,8 @@ package com.djavid.hackactivity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.view.WindowManager
 import com.djavid.hackactivity.data.Event
@@ -28,7 +30,7 @@ class PlaceActivity : AppCompatActivity() {
         frameLayout.setPadding(0, 0, 0, navbarHeight)
 
         placeId = intent.getIntExtra("placeId", -1)
-        if (placeId != -1) getPlaceEvents(placeId)
+        if (placeId != -1) getPlaceEvents(placeId, true)
         toolbarTitle.text = intent.getStringExtra("placeName")
         backButton.setOnClickListener {
             finish()
@@ -40,6 +42,8 @@ class PlaceActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        swipeRefreshLayout.setOnRefreshListener { getPlaceEvents(placeId) }
+        swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.blue))
     }
 
     override fun onResume() {
@@ -55,13 +59,18 @@ class PlaceActivity : AppCompatActivity() {
         }
     }
 
-    private fun getPlaceEvents(eventId: Int) {
+    private fun getPlaceEvents(eventId: Int, refreshWhole: Boolean = false) {
         disposable?.dispose()
         disposable = App.getApi().getPlaceEvents(App.getPreferences().getInt("token", 2), eventId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { showProgress(true) }
-            .doOnEvent { _, _ -> showProgress(false) }
+            .doOnSubscribe {
+                if (refreshWhole) showProgress(true)
+            }
+            .doOnEvent { _, _ ->
+                showProgress(false)
+                swipeRefreshLayout.isRefreshing = false
+            }
             .subscribe({
                 if (it != null && it.isNotEmpty())
                     showEvents(it)
@@ -80,4 +89,5 @@ class PlaceActivity : AppCompatActivity() {
     private fun showProgress(show: Boolean) {
         progressLayout.visible(show)
     }
+
 }
