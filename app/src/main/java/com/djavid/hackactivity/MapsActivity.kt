@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import com.google.android.gms.maps.model.BitmapDescriptor
+import kotlinx.android.synthetic.main.activity_maps.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -86,6 +87,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
                 startActivity(intent)
             }
+        }
+
+        recommendationsBtn.setOnClickListener {
+            val intent = Intent(this, RecommendationsActivity::class.java)
+            startActivity(intent)
         }
     }
 

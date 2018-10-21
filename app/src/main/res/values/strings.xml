@@ -8,6 +8,7 @@
     <string name="joined">Joined</string>
     <string name="join">Join</string>
     <string name="create_new_event">Create new event</string>
+    <string name="recommendations">Recommended events</string>
 
     <string-array name="activity_types">
         <item>volleyball</item>

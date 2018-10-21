@@ -40,6 +40,8 @@
         </activity>
         <activity android:name=".NewEventActivity">
         </activity>
+        <activity android:name=".RecommendationsActivity">
+        </activity>
     </application>
 
 </manifest>

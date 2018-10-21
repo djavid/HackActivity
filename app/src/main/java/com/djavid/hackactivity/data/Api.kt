@@ -31,4 +31,7 @@ interface Api {
         @Query("token") token: Int
     ): Single<Boolean>
 
+    @GET("recommend")
+    fun getRecommendedEvents(@Query("token") token: Int): Single<List<Event>>
+
 }
