@@ -28,8 +28,13 @@ import org.joda.time.DateTime
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.support.constraint.ConstraintLayout
+import android.support.design.widget.CoordinatorLayout
+import android.view.WindowManager
 import com.google.android.gms.maps.model.BitmapDescriptor
 import kotlinx.android.synthetic.main.activity_maps.*
+import org.joda.time.DateTimeZone
+import java.util.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -40,7 +45,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private var places: List<Place>? = null
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private var disposable: Disposable? = null
-    private var chosenPlace: Place? = null
 
     companion object {
         private const val DEFAULT_ZOOM = 12f
@@ -57,37 +61,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-        bottomSheetBehavior.setBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
-            }
-
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    chosenPlace = null
-                }
-            }
-        })
-
-        joinBtn.setOnClickListener {
-            chosenPlace?.let { place ->
-                if (place.upcomingEvent != null)
-                    joinEvent(place.upcomingEvent.id)
-            }
-        }
-
-        bottom_sheet.setOnClickListener {
-            val id = chosenPlace?.id
-            val name = chosenPlace?.name
-
-            if (id != null && name != null) {
-                val intent = Intent(this, PlaceActivity::class.java).apply {
-                    putExtra("placeId", id)
-                    putExtra("placeName", name)
-                }
-                startActivity(intent)
-            }
-        }
+//        bottomSheetBehavior.setBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback() {
+//            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+//
+//            }
+//
+//            override fun onStateChanged(bottomSheet: View, newState: Int) {
+//                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+//                    //chosenPlace = null
+//                }
+//            }
+//        })
 
         recommendationsBtn.setOnClickListener {
             val intent = Intent(this, RecommendationsActivity::class.java)
@@ -117,14 +101,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         place?.let {
             placeTitle.text = it.name
-            chosenPlace = it
+            //chosenPlace = it
 
             if (it.upcomingEvent != null) {
                 activityTitle.text = it.upcomingEvent.type
                 membersTitle.text = "${it.upcomingEvent.membersCount} / ${it.upcomingEvent.maxAllowed}"
                 val start = DateTime(it.upcomingEvent.dateTime * 1000)
                 val end = start.plusMinutes(it.upcomingEvent.duration)
-                setUpcomingEventState(start.isBeforeNow && end.isAfterNow, it.upcomingEvent.joined != 0)
+                val now = DateTime(DateTimeZone.forTimeZone(TimeZone.getTimeZone("ES")))
+                setUpcomingEventState(start.isBefore(now) && end.isAfter(now), it.upcomingEvent.joined != 0)
                 eventState.visible(true)
                 upcomingEvent.visible(true)
                 bottomSheetBehavior.peekHeight = toPx(200.0)
@@ -133,6 +118,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 upcomingEvent.visible(false)
                 bottomSheetBehavior.peekHeight = toPx(50.0)
             }
+
+
+            bottom_sheet.setOnClickListener { _ ->
+                val intent = Intent(this, PlaceActivity::class.java).apply {
+                    putExtra("placeId", it.id)
+                    putExtra("placeName", it.name)
+                }
+                startActivity(intent)
+            }
+            joinBtn.setOnClickListener { _ ->
+                if (it.upcomingEvent != null)
+                    joinEvent(it.upcomingEvent.id)
+            }
+
 
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -194,14 +193,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     val marker = mMap.addMarker(
                         MarkerOptions()
                             .position(latlng)
-                            .title(place.name)
                             .apply {
                                 if (place.types.size == 1) {
                                     val activityIcon = getIconForActivityType(place.types[0])
                                     if (activityIcon != null) icon(activityIcon)
-                                } else {
-
-                                }
+                                } else { }
                             }
                     )
                     marker.tag = place

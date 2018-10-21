@@ -19,7 +19,6 @@ class PlaceActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place)
         setRecycler()

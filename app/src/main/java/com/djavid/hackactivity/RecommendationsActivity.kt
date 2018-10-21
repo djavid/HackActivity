@@ -18,7 +18,6 @@ class RecommendationsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recommendations)
         setRecycler()
@@ -28,7 +27,7 @@ class RecommendationsActivity : AppCompatActivity() {
         frameLayout.setPadding(0, 0, 0, navbarHeight)
         backButton.setOnClickListener { finish() }
 
-        //getRecommendedEvents() TODO
+        getRecommendedEvents()
     }
 
     private fun setRecycler() {
@@ -47,8 +46,8 @@ class RecommendationsActivity : AppCompatActivity() {
             .doOnSubscribe { showProgress(true) }
             .doOnEvent { _, _ -> showProgress(false) }
             .subscribe({
-                //if (it != null && it.isNotEmpty()) TODO
-                    //showEvents(it)
+                if (it != null && it.isNotEmpty())
+                    showEvents(it)
             }, {
                 it.printStackTrace()
             })
