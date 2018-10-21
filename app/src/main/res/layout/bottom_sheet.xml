@@ -44,66 +44,93 @@
             app:layout_constraintTop_toBottomOf="@id/eventState"
     />
 
-    <ImageView
-            android:id="@+id/activityIcon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="16dp"
+
+    <android.support.constraint.ConstraintLayout
+            android:id="@+id/upcomingEvent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:srcCompat="@drawable/ic_beach_ball"
             app:layout_constraintTop_toBottomOf="@id/placeTitle"
-            app:layout_constraintStart_toStartOf="parent"
-    />
+            app:layout_constraintStart_toStartOf="parent">
 
-    <TextView
-            android:id="@+id/activityTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:textSize="14sp"
-            android:textColor="@color/black_54"
-            tools:text="Football"
-            app:layout_constraintStart_toEndOf="@id/activityIcon"
-            app:layout_constraintTop_toTopOf="@id/activityIcon"
-            app:layout_constraintBottom_toBottomOf="@id/activityIcon"
-    />
+        <ImageView
+                android:id="@+id/activityIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                app:srcCompat="@drawable/ic_beach_ball"
+                app:layout_constraintStart_toStartOf="parent"
+        />
 
-    <ImageView
-            android:id="@+id/membersIcon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            app:srcCompat="@drawable/ic_follower"
-            app:layout_constraintTop_toBottomOf="@id/activityIcon"
-            app:layout_constraintStart_toStartOf="parent"
-    />
+        <TextView
+                android:id="@+id/activityTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textSize="14sp"
+                android:textColor="@color/black_54"
+                tools:text="Football"
+                app:layout_constraintStart_toEndOf="@id/activityIcon"
+                app:layout_constraintTop_toTopOf="@id/activityIcon"
+                app:layout_constraintBottom_toBottomOf="@id/activityIcon"
+        />
 
-    <TextView
-            android:id="@+id/membersTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:textSize="14sp"
-            android:textColor="@color/black_54"
-            tools:text="7 / 11"
-            app:layout_constraintStart_toEndOf="@id/membersIcon"
-            app:layout_constraintTop_toTopOf="@id/membersIcon"
-            app:layout_constraintBottom_toBottomOf="@id/membersIcon"
-    />
+        <ImageView
+                android:id="@+id/membersIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:srcCompat="@drawable/ic_follower"
+                app:layout_constraintTop_toBottomOf="@id/activityIcon"
+                app:layout_constraintStart_toStartOf="parent"
+        />
 
-    <TextView
-            android:id="@+id/joinBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:textSize="14sp"
-            android:fontFamily="sans-serif-medium"
-            android:textStyle="normal"
-            android:textColor="@color/blue"
-            android:lineSpacingExtra="10sp"
-            android:text="@string/join_event"
-            app:layout_constraintTop_toBottomOf="@id/membersIcon"
-    />
+        <TextView
+                android:id="@+id/membersTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textSize="14sp"
+                android:textColor="@color/black_54"
+                tools:text="7 / 11"
+                app:layout_constraintStart_toEndOf="@id/membersIcon"
+                app:layout_constraintTop_toTopOf="@id/membersIcon"
+                app:layout_constraintBottom_toBottomOf="@id/membersIcon"
+        />
+
+        <FrameLayout
+                android:id="@+id/frameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@id/membersIcon"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                    android:id="@+id/joinBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:layout_gravity="center"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textStyle="normal"
+                    android:textColor="@color/blue"
+                    android:lineSpacingExtra="10sp"
+                    android:text="@string/join_event" />
+
+            <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+            />
+
+        </FrameLayout>
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

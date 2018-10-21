@@ -14,6 +14,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 class App: Application() {
 
@@ -52,7 +53,7 @@ class App: Application() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                sharedPreferences.edit().putString("token", it).apply()
+                sharedPreferences.edit().putInt("token", it.id).apply()
             }, {
                 it.printStackTrace()
             })
@@ -66,6 +67,8 @@ class App: Application() {
             .client(
                 OkHttpClient.Builder()
                     .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
                     .build()
             )
             .build()

@@ -5,5 +5,17 @@
     <string name="title_upcoming">Upcoming</string>
     <string name="title_live">Live</string>
     <string name="join_event">Join event</string>
+    <string name="joined">Joined</string>
+    <string name="join">Join</string>
+    <string name="create_new_event">Create new event</string>
+
+    <string-array name="activity_types">
+        <item>volleyball</item>
+        <item>table tennis</item>
+        <item>tennis</item>
+        <item>football</item>
+        <item>basketball</item>
+        <item>frisbee</item>
+    </string-array>
 
 </resources>
