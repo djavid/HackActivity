@@ -69,6 +69,8 @@ class EventItem(
     @Position
     var position: Int = 0
 
+    private var membersCount = 0
+
 
     @Resolve
     fun onResolved() {
@@ -77,6 +79,23 @@ class EventItem(
         eventTitle.text = event.name
         setEventJoined(event.joined == 1)
         joinButton.setOnClickListener { joinEvent(event.id) }
+
+        activityTitle.text = event.type
+        membersCount = event.membersCount
+        membersCountTitle.text = "$membersCount / ${event.maxAllowed}"
+
+        val start = DateTime(event.dateTime * 1000)
+        val end = start.plusMinutes(event.duration)
+
+        dateTitle.text = start.toString("MMMMMMMMM dd, yyyy", Locale.US)
+        timeTitle.text = start.toString("hh:mm") + " - " + end.toString("hh:mm")
+
+        if (event.description.isNotEmpty()) {
+            description.text = event.description
+        } else {
+            descFrameLayout.visible(false)
+            description.visible(false)
+        }
     }
 
     @SuppressLint("CheckResult")
@@ -88,8 +107,9 @@ class EventItem(
             .doOnSubscribe { showJoinProgress(true) }
             .doOnEvent { _, _ -> showJoinProgress(false) }
             .subscribe({
-                if (it == 1) {
-                    setEventJoined(true)
+                when (it) {
+                    2 -> setEventJoined(false)
+                    1 -> setEventJoined(true)
                 }
             }, {
                 it.printStackTrace()
@@ -109,22 +129,9 @@ class EventItem(
             if (joined) ContextCompat.getColor(context, R.color.green)
             else ContextCompat.getColor(context, R.color.blue)
         )
-        joinButton.isEnabled = !joined
-        activityTitle.text = event.type
-        membersCountTitle.text = "${event.membersCount} / ${event.maxAllowed}"
 
-        val start = DateTime(event.dateTime * 1000)
-        val end = start.plusMinutes(event.duration)
-
-        dateTitle.text = start.toString("MMMMMMMMM dd, yyyy", Locale.US)
-        timeTitle.text = start.toString("hh:mm") + " - " + end.toString("hh:mm")
-
-        if (event.description.isNotEmpty()) {
-            description.text = event.description
-        } else {
-            descFrameLayout.visible(false)
-            description.visible(false)
-        }
+        membersCount = if (joined) membersCount + 1 else membersCount - 1
+        membersCountTitle.text = "$membersCount / ${event.maxAllowed}"
     }
 
 }
